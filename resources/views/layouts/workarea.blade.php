@@ -23,7 +23,11 @@
                 <!-- Page Sidebar Ends-->
                 <div class="page-body">
                     <!-- Container-fluid starts-->
-                    <div class="container-fluid dashboard-default-sec">
+                    <div class="container-fluid">
+                        @yield('breadcrumb')
+                    </div>
+
+                    <div class="container-fluid">
                         @yield('content')
                     </div>
                     <!-- Container-fluid Ends-->
@@ -36,7 +40,7 @@
                                 <p class="mb-0">Copyright 2021-22 © viho All rights reserved.</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="pull-right mb-0">Hand crafted & made with <i class="fa fa-heart font-secondary"></i></p>
+                                <p class="pull-right mb-0"><strong>Posware</strong></p>
                             </div>
                         </div>
                     </div>

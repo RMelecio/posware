@@ -30,6 +30,7 @@ class AdminPermissionSeeder extends Seeder
                 'label' => 'Configuración',
                 'type' => 'header',
                 'parent_permission' => null,
+                'icon' => null,
                 'created_at' => now(),
             ],
             [
@@ -37,8 +38,9 @@ class AdminPermissionSeeder extends Seeder
                 'route' => 'profile',
                 'guard_name' => 'web',
                 'label' => 'Perfiles',
-                'type' => 'option',
+                'type' => 'menu',
                 'parent_permission' => 1,
+                'icon' => 'fa fa-list',
                 'created_at' => now(),
             ],
             [
@@ -47,7 +49,8 @@ class AdminPermissionSeeder extends Seeder
                 'guard_name' => 'web',
                 'label' => '',
                 'type' => 'action',
-                'parent_permission' => null,
+                'parent_permission' => 2,
+                'icon' => null,
                 'created_at' => now(),
             ],
             [
@@ -55,8 +58,9 @@ class AdminPermissionSeeder extends Seeder
                 'route' => 'profile/{id}',
                 'guard_name' => 'web',
                 'label' => '',
-                'type' => 'option',
-                'parent_permission' => null,
+                'type' => 'action',
+                'parent_permission' => 2,
+                'icon' => null,
                 'created_at' => now(),
             ],
             [
@@ -64,8 +68,9 @@ class AdminPermissionSeeder extends Seeder
                 'route' => 'profile/{id}',
                 'guard_name' => 'web',
                 'label' => '',
-                'type' => 'option',
-                'parent_permission' => null,
+                'type' => 'action',
+                'parent_permission' => 2,
+                'icon' => null,
                 'created_at' => now(),
             ],
         ]);

@@ -1,6 +1,6 @@
 @extends('layouts.workarea')
 
-@section('content')
+@section('breadcrumb')
     <div class="page-header">
         <div class="row">
         <div class="col-sm-6">
@@ -10,6 +10,5 @@
             </ol>
         </div>
         </div>
-        {{ Auth::user()->menu() }}
     </div>
 @endsection

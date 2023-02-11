@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Spatie\Permission\Models\Permission;
 
 class User extends Authenticatable
 {
@@ -46,16 +47,32 @@ class User extends Authenticatable
 
     public function menu()
     {
-        return $this->join('model_has_roles', function($q) {
+        $headers = $this->join('model_has_roles', function($q) {
             $q->on('users.id', '=', 'model_has_roles.model_id')
-                ->where('model_has_roles.model_type', 'App\\Models\\User');
-        })->join('role_has_permissions', 'model_has_roles.role_id', '=', 'role_has_permissions.role_id')
+            ->where('model_has_roles.model_type', 'App\\Models\\User');
+        })
+        ->join('role_has_permissions', 'model_has_roles.role_id', '=', 'role_has_permissions.role_id')
         ->join('permissions', function($q){
             $q->on('role_has_permissions.permission_id', '=', 'permissions.id')
-                ->where('type', 'header');
-        })->orderBy('permissions.label')
-        ->select('permissions.label', 'permissions.icon')
+            ->where('type', 'header');
+        })
+        ->orderBy('permissions.label')
+        ->select('permissions.id', 'permissions.label', 'permissions.icon')
         ->get();
+
+        foreach ($headers as $keyHeader => $header) {
+            $menus = Permission::where('parent_permission', $header->id)
+                ->orderBy('label')
+                ->get();
+            foreach ($menus as $keyMenu => $menu) {
+                $menus[$keyMenu]['options'] = $options = Permission::where('parent_permission', $menu->id)
+                    ->where('type', 'option')
+                    ->orderBy('label')
+                    ->get();
+            }
+            $headers[$keyHeader]['menus'] = $menus;
+        }
+        return $headers;
     }
 
     protected function fullName(): Attribute

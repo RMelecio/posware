@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('route')->nullable(true)->after('name');
             $table->string('label')->nullable(true)->after('route');
             $table->string('icon')->nullable(true)->after('label');
-            $table->enum('type', ['header', 'option', 'action'])->after('guard_name');
+            $table->enum('type', ['header', 'menu', 'option', 'action'])->after('guard_name');
             $table->unsignedBigInteger('parent_permission')->nullable(true)->after('guard_name');
 
             $table->foreign('parent_permission')->references('id')->on('permissions');
