@@ -38,13 +38,18 @@
                                     <td>{{ $profile->description }}</td>
                                     <td>
                                         <form method="GET" action="{{ route('profile.edit', $profile->id) }}">
-                                            <button class="btn btn-pill btn-primary btn-xs" type="submit">Editar</button>
+                                            <button class="btn btn-pill btn-primary btn-sm" type="submit"><i class="fa fa-pencil"></i></button>
                                         </form>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="card-footer text-end">
+                    <form method="GET" action="{{ route('profile.create') }}">
+                      <button class="btn btn-sm btn-primary" type="submit">Nuevo</button>
+                    </form>
                 </div>
             </div>
         </div>

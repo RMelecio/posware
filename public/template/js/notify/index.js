@@ -4,7 +4,7 @@ var notify = $.notify('<i class="fa fa-bell-o"></i><strong>Loading</strong> page
     allow_dismiss: true,
     delay: 2000,
     showProgressbar: true,
-    timer: 300
+    timer: 1000
 });
 
 setTimeout(function() {

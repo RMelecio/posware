@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+use App\Http\Requests\profile\StoreProfileRequest;
 
 class ProfileController extends Controller
 {
@@ -25,7 +28,19 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        //
+        $optionMenus = Permission::where('type', 'menu')
+            ->orWhere('type', 'option')
+            ->orderBy('label')
+            ->get();
+
+        foreach ($optionMenus as $keyOptionMenu => $optionMenu) {
+            $optionMenus[$keyOptionMenu]['actions'] = Permission::where('type', 'action')
+            ->where('parent_permission', $optionMenu->id)
+            ->orderBy('label')
+            ->get();
+        }
+
+        return view('profile.create')->with('permissions', $optionMenus);
     }
 
     /**
@@ -34,9 +49,11 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProfileRequest $request)
     {
-        //
+        echo "<pre>";
+        print_r($request);
+        exit;
     }
 
     /**

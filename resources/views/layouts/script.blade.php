@@ -32,7 +32,6 @@
     <script src="{{ asset('template/js/vector-map/map/jquery-jvectormap-in-mill.js') }}"></script>
     <script src="{{ asset('template/js/vector-map/map/jquery-jvectormap-asia-mill.js') }}"></script>
     <script src="{{ asset('template/js/dashboard/default.js') }}"></script>
-    <script src="{{ asset('template/js/notify/index.js') }}"></script>
     <script src="{{ asset('template/js/datepicker/date-picker/datepicker.js') }}"></script>
     <script src="{{ asset('template/js/datepicker/date-picker/datepicker.en.js') }}"></script>
     <script src="{{ asset('template/js/datepicker/date-picker/datepicker.custom.js') }}"></script>
@@ -42,3 +41,6 @@
     <script src="{{ asset('template/js/theme-customizer/customizer.js') }}"></script>
     <!-- login js-->
     <!-- Plugin used-->
+    <!--
+    <script src="{{ asset('template/js/notify/index.js') }}"></script>
+    -->

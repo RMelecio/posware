@@ -20,7 +20,7 @@
                 </li>
                 @foreach ($header->menus as $menu)
                     <li class="dropdown">
-                        <a class="nav-link menu-title link-nav" href="{{ $menu->route }}">
+                        <a class="nav-link menu-title link-nav" href="{{ route($menu->route) }}">
                             <i class="{{ $menu->icon }}"></i>
                             <span>{{ $menu->label }}</span>
                         </a>
