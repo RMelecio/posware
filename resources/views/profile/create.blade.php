@@ -38,13 +38,13 @@
                                 <div class="col-3">
                                     <div class="mb-3">
                                         <label class="form-label" for="name">Nombre</label>
-                                        <input class="form-control form-control-sm" id="name" name="name" type="text" placeholder="Nombre">
+                                        <input class="form-control form-control-sm" id="name" name="name" type="text" placeholder="Nombre" value="{{ old('name') }}">
                                     </div>
                                 </div>
                                 <div class="col-9">
                                     <div class="mb-3">
                                         <label class="form-label" for="description">Descripción</label>
-                                        <input class="form-control form-control-sm" id="description" name="description" type="text" placeholder="Descripción">
+                                        <input class="form-control form-control-sm" id="description" name="description" type="text" placeholder="Descripción" value="{{ old('description') }}">
                                     </div>
                                 </div>
                             </div>
@@ -67,9 +67,14 @@
                         <h6>{{ $permission->label }}</h6>
                     </div>
                     <div class="card-body">
+                        {{ old('permissions[1]') }}
                         @foreach ($permission->actions as $action)
                             <div class="checkbox">
-                                <input class="checkboxPermission" id="{{ $action->id }}" name="permission[{{ $action->id }}]" type="checkbox">
+                                <input class="checkboxPermission" id="{{ $action->id }}" name="permissions[]" value="{{ $action->id }}" type="checkbox"
+                                @if (is_array(old('permissions')) && in_array($action->id, old('permissions')))
+                                    checked
+                                @endif
+                                >
                                 <label for="{{ $action->id }}">{{ $action->label}}</label>
                             </div>
                         @endforeach

@@ -51,9 +51,15 @@ class ProfileController extends Controller
      */
     public function store(StoreProfileRequest $request)
     {
-        echo "<pre>";
-        print_r($request);
-        exit;
+        $newRol = Role::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+        $newRol->syncPermissions($request->permissions);
+        $profiles = Role::all();
+        return view('profile.index')
+            ->with('success', "Rol {$request->name} creado con éxito")
+            ->with('profiles', $profiles);
     }
 
     /**
@@ -76,7 +82,6 @@ class ProfileController extends Controller
     public function edit($id)
     {
         $profile = Role::find($id);
-
 
         return view('profile.edit')->with('profile', $profile);
     }

@@ -24,18 +24,21 @@ class StoreProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'description' => 'required|string'
+            'name' => 'required|string|unique:roles,name',
+            'description' => 'required|string',
+            'permissions' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'El nombres en obligatorio',
-            'name.string' => 'El nombre debe ser texto',
-            'description.required' => 'La descripción es obligatoria',
-            'description.string' => 'La descripción debe ser texto',
+            'name.required' => 'El nombre es obligatorio.',
+            'name.string' => 'El nombre debe ser texto.',
+            'name.unique' => 'El nombre del rol ya existe.',
+            'description.required' => 'La descripción es obligatoria.',
+            'description.string' => 'La descripción debe ser texto.',
+            'permissions' => 'Debe seleccionar al menos un permiso.'
         ];
     }
 }
