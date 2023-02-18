@@ -20,7 +20,7 @@
                 <div class="card-header">
                     <h5>Perfiles</h5><span>Listado de perfiles</span>
                 </div>
-                @if($success)
+                @if(isset($success))
                     <div class="alert alert-primary dark alert-dismissible fade show" role="alert">
                         {{ $success }}
                         <button class="btn-close" type="button" data-bs-dismiss="alert"></button>

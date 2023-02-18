@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\View\View;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests\profile\StoreProfileRequest;
+use App\Http\Requests\profile\UpdateProfileRequest;
 
 class ProfileController extends Controller
 {
@@ -79,11 +84,42 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $profile = Role::find($id);
 
-        return view('profile.edit')->with('profile', $profile);
+        $profilePermissions = Role::join('role_has_permissions', function(JoinClause $join) use ($id) {
+                $join->on('roles.id', 'role_has_permissions.role_id');
+                $join->where('roles.id', $id);
+            })->join('permissions', function(JoinClause $join) {
+                $join->on('role_has_permissions.permission_id', 'permissions.id');
+                $join->where('permissions.type', 'action');
+            })
+            ->select('permissions.*')
+            ->get();
+
+        $assignedPermissions = [];
+        foreach ($profilePermissions as $permission) {
+            $assignedPermissions[] = $permission->id;
+        }
+        $assignedPermissions = Arr::flatten($assignedPermissions);
+
+        $optionMenus = Permission::where('type', 'menu')
+        ->orWhere('type', 'option')
+        ->orderBy('label')
+        ->get();
+
+        foreach ($optionMenus as $keyOptionMenu => $optionMenu) {
+            $optionMenus[$keyOptionMenu]['actions'] = Permission::where('type', 'action')
+            ->where('parent_permission', $optionMenu->id)
+            ->orderBy('label')
+            ->get();
+        }
+
+        return view('profile.edit')
+            ->with('profile', $profile)
+            ->with('permissions', $optionMenus)
+            ->with('assignedPermissions', $assignedPermissions);
     }
 
     /**
@@ -93,9 +129,26 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProfileRequest $request, $id): View
     {
-        //
+        $profile = Role::find($id);
+        $profile->name = $request->name;
+        $profile->description = $request->description;
+
+        DB::beginTransaction();
+        try {
+            $profile->save();
+            $profile->syncPermissions($request->permissions);
+            DB::commit();
+            $profiles = Role::all();
+            return view('profile.index')
+                ->with('success', "Rol {$request->name} actualizado con éxito")
+                ->with('profiles', $profiles);
+        } catch (Throwable $e) {
+            Log::info($e);
+            DB::rollBack();
+            return Redirect::back()->withErrors(['error' => 'Error al actualizar el Perfil']);
+        }
     }
 
     /**

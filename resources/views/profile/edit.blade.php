@@ -15,36 +15,72 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
-        <div class="card">
-                  <div class="card-header pb-0">
-                    <h5>Perfil</h5>
-                  </div>
-                  <form class="form theme-form">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-3">
-                          <div class="mb-3">
-                            <label class="form-label" for="name">Nombre</label>
-                            <input class="form-control form-control-sm" id="name" type="text" placeholder="Nombre" value="{{ $profile->name }}">
-                          </div>
-                        </div>
-                        <div class="col-9">
-                          <div class="mb-3">
-                            <label class="form-label" for="description">Descripción</label>
-                            <input class="form-control form-control-sm" id="description" type="text" placeholder="Descripción" value="{{ $profile->description }}">
-                          </div>
-                        </div>
-                      </div>
+    <script src="{{ asset('js/profile/profile.js') }}"></script>
+    <form method="POST" action="{{ route('profile.update', $profile->id) }}">
+        @csrf
+        @method('PATCH')
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h5>Editar Perfil</h5>
                     </div>
-                    <div class="card-footer">
-                      <button class="btn btn-sm btn-danger" type="reset">Eliminar</button>
-                      <button class="btn btn-sm btn-light" type="reset">Limpiar</button>
-                      <button class="btn btn-sm btn-primary" type="submit">Guardar</button>
+                    <div class="form theme-form">
+                        <div class="card-body">
+                            @if ($errors->any())
+                                <div class="alert alert-danger dark alert-dismissible fade show" role="alert">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    <button class="btn-close" type="button" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="name">Nombre</label>
+                                        <input class="form-control form-control-sm" id="name" name="name" type="text" placeholder="Nombre" value="{{ old('name') ? old('name') : $profile->name }}">
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="description">Descripción</label>
+                                        <input class="form-control form-control-sm" id="description" name="description" type="text" placeholder="Descripción" value="{{ old('description') ? old('description') : $profile->description }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-sm btn-light" id="btnClearForm" type="button" onclick="allPermissions()">Asignar Todos</button>
+                            <button class="btn btn-sm btn-primary" type="submit">Actualizar</button>
+                        </div>
                     </div>
-                  </form>
                 </div>
+            </div>
         </div>
-    </div>
+
+        <div class="row">
+            @foreach ($permissions as $permission)
+            <div class="col-sm-2">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h6>{{ $permission->label }}</h6>
+                    </div>
+                    <div class="card-body">
+                        @foreach ($permission->actions as $action)
+                            <div class="checkbox">
+                                <input class="checkboxPermission" id="{{ $action->id }}" name="permissions[]" value="{{ $action->id }}" type="checkbox"
+                                @if (in_array($action->id, $assignedPermissions))
+                                    checked
+                                @endif
+                                >
+                                <label for="{{ $action->id }}">{{ $action->label}}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </form>
 @endsection
