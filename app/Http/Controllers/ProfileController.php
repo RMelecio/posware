@@ -170,7 +170,7 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id): View
+    public function destroy($id): View|RedirectResponse
     {
         $usedProfile = DB::table('model_has_roles')
             ->where('role_id', $id)

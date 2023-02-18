@@ -37,7 +37,7 @@
                 <h6>Configuración</h6>
             </div>
             </li>
-            <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="home"></i><span>Departamentos</span></a>
+            <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="home"></i><span>Others</span></a>
             <ul class="nav-submenu menu-content">
                 <li><a href="index.html">Default</a></li>
                 <li><a href="dashboard-02.html">Ecommerce</a></li>
