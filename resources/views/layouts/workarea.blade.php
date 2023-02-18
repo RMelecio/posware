@@ -29,6 +29,7 @@
 
                     <div class="container-fluid">
                         @yield('content')
+                        @yield('modals')
                     </div>
                     <!-- Container-fluid Ends-->
                 </div>

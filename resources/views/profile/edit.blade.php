@@ -51,8 +51,13 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-sm btn-light" id="btnClearForm" type="button" onclick="allPermissions()">Asignar Todos</button>
-                            <button class="btn btn-sm btn-primary" type="submit">Actualizar</button>
+                            @can('profile.delete')
+                                <button class="btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#deleteModal">Eliminar</button>
+                            @endcan
+                            @can('profile.update')
+                                <button class="btn btn-sm btn-light" id="btnClearForm" type="button" onclick="allPermissions()">Asignar Todos</button>
+                                <button class="btn btn-sm btn-primary" type="submit">Actualizar</button>
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -83,4 +88,26 @@
             @endforeach
         </div>
     </form>
+@endsection
+
+@section('modals')
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog danger" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Perfil</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">¿Está seguro que desea <strong>eliminar</strong> el perfil <strong>{{ $profile->name }}</strong>?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary" type="button" data-bs-dismiss="modal">Cerrar</button>
+                    <form method="POST" action="{{ route('profile.destroy', $profile->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

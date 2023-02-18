@@ -52,11 +52,13 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer text-end">
-                    <form method="GET" action="{{ route('profile.create') }}">
-                      <button class="btn btn-sm btn-primary" type="submit">Nuevo</button>
-                    </form>
-                </div>
+                @can('profile.create')
+                    <div class="card-footer text-end">
+                        <form method="GET" action="{{ route('profile.create') }}">
+                        <button class="btn btn-sm btn-primary" type="submit">Nuevo</button>
+                        </form>
+                    </div>
+                @endcan
             </div>
         </div>
 </div>

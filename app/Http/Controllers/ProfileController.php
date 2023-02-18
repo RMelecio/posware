@@ -9,6 +9,7 @@ use Illuminate\View\View;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
 
 use App\Http\Requests\profile\StoreProfileRequest;
 use App\Http\Requests\profile\UpdateProfileRequest;
@@ -157,8 +158,22 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id): View
     {
-        //
+        $usedProfile = DB::table('model_has_roles')
+            ->where('role_id', $id)
+            ->count();
+
+        if ($usedProfile) {
+            return redirect()->back()->withErrors(['error' => 'Este perfil está asignado a un usuario.']);
+        }
+
+        $role = Role::find($id);
+        $role->delete();
+        $profiles = Role::all();
+
+        return view('profile.index')
+            ->with('success', "Rol {$role->name} eliminado.")
+            ->with('profiles', $profiles);
     }
 }
