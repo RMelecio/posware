@@ -136,10 +136,22 @@ class ProfileController extends Controller
         $profile->name = $request->name;
         $profile->description = $request->description;
 
+        $parentMenus = [];
+        foreach ($request->permissions as $permission) {
+            $permission = Permission::find($permission);
+            $parentMenus[$permission->parent_permission] = $permission->parent_permission;
+        }
+
+        foreach ($parentMenus as $parentMenu) {
+            $permission = Permission::find($parentMenu);
+            $parentMenus[$permission->parent_permission] = $permission->parent_permission;
+        }
+
+        $allPermissions = array_merge($request->permissions, $parentMenus);
         DB::beginTransaction();
         try {
             $profile->save();
-            $profile->syncPermissions($request->permissions);
+            $profile->syncPermissions($allPermissions);
             DB::commit();
             $profiles = Role::all();
             return view('profile.index')

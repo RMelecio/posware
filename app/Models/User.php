@@ -10,6 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -47,9 +49,9 @@ class User extends Authenticatable
 
     public function menu()
     {
-        $headers = $this->join('model_has_roles', function($q) {
-            $q->on('users.id', '=', 'model_has_roles.model_id')
-            ->where('model_has_roles.model_type', 'App\\Models\\User');
+        $headers = $this->join('model_has_roles', function(JoinClause $q) {
+            $q->on('users.id', '=', 'model_has_roles.model_id');
+            $q->where('model_has_roles.model_type', 'App\\Models\\User');
         })
         ->join('role_has_permissions', 'model_has_roles.role_id', '=', 'role_has_permissions.role_id')
         ->join('permissions', function($q){
@@ -61,9 +63,15 @@ class User extends Authenticatable
         ->get();
 
         foreach ($headers as $keyHeader => $header) {
-            $menus = Permission::where('parent_permission', $header->id)
-                ->orderBy('label')
-                ->get();
+            $menus = Permission::join('role_has_permissions', function(JoinClause $join) use ($header) {
+                $join->on('role_has_permissions.permission_id', '=', 'permissions.id');
+                $join->where('permissions.parent_permission', $header->id);
+            })->join('model_has_roles', function(JoinClause $join) {
+                $join->on('role_has_permissions.role_id', '=', 'model_has_roles.model_id');
+                $join->where('model_has_roles.model_type', 'App\\Models\\User');
+                $join->where('model_has_roles.model_id', $this->id);
+            })->get();
+
             foreach ($menus as $keyMenu => $menu) {
                 $menus[$keyMenu]['options'] = $options = Permission::where('parent_permission', $menu->id)
                     ->where('type', 'option')
