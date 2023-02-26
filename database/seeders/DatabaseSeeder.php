@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AdminPermissionSeeder::class,
             DepartmenPermissionSeeder::class,
+            CfdiFiscalRegimeSeeder::class,
+            CompanySeeder::class,
+            CompanyPermissionSeeder::class,
         ]);
     }
 }
