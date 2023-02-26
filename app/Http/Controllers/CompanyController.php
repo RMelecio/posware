@@ -7,15 +7,19 @@ use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\View\View;
+use App\Models\CfdiFiscalRegime;
 
 class CompanyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(): View
     {
-        //
+        $companies = Company::all();
+        return view('company.index')
+            ->with('companies', $companies);
     }
 
     /**
@@ -45,9 +49,12 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Company $company): Response
+    public function edit(Company $company): View
     {
-        //
+        $fiscalRegimes = CfdiFiscalRegime::all();
+        return view('company.edit')
+            ->with('company', $company)
+            ->with('fiscalRegimes', $fiscalRegimes);
     }
 
     /**
