@@ -39,6 +39,11 @@
     <!-- Theme js-->
     <script src="{{ asset('template/js/script.js') }}"></script>
     <script src="{{ asset('template/js/theme-customizer/customizer.js') }}"></script>
+    <script>
+        if (window.history.replaceState) { // verificamos disponibilidad
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
     <!-- login js-->
     <!-- Plugin used-->
     <!--
