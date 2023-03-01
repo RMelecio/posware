@@ -19,6 +19,7 @@ class CompanySeeder extends Seeder
             'name' => 'Nombre empresa',
             'trade_name' => 'Razón Social',
             'fiscal_regime_id' => 1,
+            'country_id' => 151,
             'state' => 'Jalisco',
             'municipality' => 'Guadalajara',
             'location' => 'Guadalajara',

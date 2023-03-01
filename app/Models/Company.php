@@ -13,6 +13,8 @@ class Company extends Model
         'alias',
         'name',
         'trade_name',
+        'fiscal_regime_id',
+        'country_id',
         'state',
         'municipality',
         'location',

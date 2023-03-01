@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             AdminPermissionSeeder::class,
             DepartmenPermissionSeeder::class,
             CfdiFiscalRegimeSeeder::class,
+            CountrySeeder::class,
             CompanySeeder::class,
             CompanyPermissionSeeder::class,
         ]);

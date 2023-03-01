@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('trade_name');
             $table->unsignedBigInteger('fiscal_regime_id');
+            $table->unsignedBigInteger('country_id');
             $table->string('state');
             $table->string('municipality');
             $table->string('location');
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('fiscal_regime_id')->references('id')->on('cfdi_fiscal_regimes');
+            $table->foreign('country_id')->references('id')->on('cfdi_countries');
         });
     }
 
